@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/dochodkova-prognoza-quiz.html",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
+}
