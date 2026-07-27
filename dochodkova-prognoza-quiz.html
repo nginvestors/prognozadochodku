@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dôchodková prognóza – krátky dotazník</title>
+<meta name="description" content="Odpovedz na 4 krátke otázky o svojej dôchodkovej prognóze a vyber si, s čím ti môžeme pomôcť.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#16203a; --bg-card:#1e2a4a;          /* tmavomodrý podklad ako v reklamách */
+    --ink:#ffffff; --ink-soft:#b9c3d9;
+    --teal:#3b7de0; --teal-dark:#0b4ea2; --teal-soft:#233a66;  /* modrá SK vlajky */
+    --amber:#ee1c25; --amber-soft:#3a1a26;    /* červená SK vlajky (CTA) */
+    --line:#2c3a5e;
+    --gold:#f5b942;
+    --radius:20px; --shadow:0 18px 50px -22px rgba(0,0,0,.55);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Montserrat','Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;
+    min-height:100vh;display:flex;flex-direction:column}
+  h1,h2{line-height:1.3;font-weight:800;letter-spacing:-.01em}
+  .hl-red{background:var(--amber);color:#fff;padding:2px 12px;border-radius:9px;white-space:nowrap}
+  p{color:var(--ink-soft)}
+  a{color:inherit}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--teal);outline-offset:2px;border-radius:8px}
+  header{padding:18px 22px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.2rem;justify-content:center}
+  .logo .mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+    display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem}
+  .stage{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:16px 18px 50px}
+  .quiz{width:100%;max-width:560px}
+  .intro{text-align:center;margin-bottom:24px}
+  .intro h1{font-size:1.75rem;margin-bottom:8px}
+  .intro p{font-size:1.02rem}
+  .card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:32px 30px;box-shadow:var(--shadow)}
+  /* progress */
+  .bar{height:8px;background:var(--teal-soft);border-radius:999px;overflow:hidden;margin-bottom:26px}
+  .bar span{display:block;height:100%;width:0;background:var(--teal);border-radius:999px;transition:width .25s ease}
+  .stepnum{font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+  /* steps */
+  .step{display:none}
+  .step.on{display:block}
+  .step h2{font-size:1.35rem;margin-bottom:22px}
+  .answers{display:grid;gap:12px}
+  .ans{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+    background:var(--bg);border:2px solid var(--line);border-radius:14px;padding:16px 18px;
+    font-size:1.05rem;font-weight:700;color:var(--ink);cursor:pointer;font-family:inherit;text-align:center;
+    transition:border-color .12s, background .12s}
+  .ans:hover{border-color:var(--teal);background:var(--teal-soft)}
+  .ans.opt{font-weight:600;text-align:left;justify-content:flex-start;font-size:1rem}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-weight:700;font-size:.95rem;margin-bottom:7px}
+  .field input{width:100%;border:1px solid var(--line);border-radius:12px;padding:13px 15px;
+    font-size:1.05rem;font-family:inherit;background:#141d33;color:var(--ink)}
+  .field input:focus{border-color:var(--teal)}
+  .field .err{display:none;color:#ff8177;font-size:.85rem;margin-top:5px}
+  .field.invalid input{border-color:#ff8177}
+  .field.invalid .err{display:block}
+  .consent{display:flex;gap:10px;align-items:flex-start;margin:18px 0;font-size:.86rem;color:var(--ink-soft)}
+  .consent input{width:18px;height:18px;margin-top:2px;flex:0 0 auto;accent-color:var(--teal)}
+  .consent a{color:var(--teal);font-weight:600}
+  .consent.invalid label{color:#ff8177}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;width:100%;
+    background:var(--amber);color:#fff;text-decoration:none;font-weight:700;font-size:1.06rem;
+    padding:16px 28px;border-radius:999px;border:none;cursor:pointer;font-family:inherit;
+    box-shadow:0 14px 28px -12px rgba(238,28,37,.5);transition:transform .15s,box-shadow .15s}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 20px 34px -12px rgba(238,28,37,.6)}
+  .btn:active{transform:translateY(0)}
+  .back{display:inline-block;margin-top:18px;background:none;border:none;color:var(--ink-soft);
+    font-size:.9rem;cursor:pointer;font-family:inherit;text-decoration:underline}
+  .micro{display:block;margin-top:12px;font-size:.82rem;color:var(--ink-soft);text-align:center}
+  .hp{position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden}
+  /* success */
+  .ok{width:64px;height:64px;border-radius:50%;background:var(--teal-soft);color:var(--teal);
+    font-size:1.9rem;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+  .success h2{text-align:center}
+  .success p{text-align:center;margin-top:10px}
+  footer{padding:20px;text-align:center;font-size:.78rem;color:#8b96b3;line-height:1.6}
+  .fill{color:#f0a24b;font-weight:700}
+  /* reviews */
+  .reviews{max-width:1000px;margin:54px auto 0;padding:0 4px}
+  .reviews h2{text-align:center;font-size:1.55rem;margin-bottom:14px}
+  .rev-head{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+  .g-badge{display:inline-flex;align-items:center;gap:8px;background:var(--bg-card);border:1px solid var(--line);
+    border-radius:999px;padding:8px 16px;font-weight:700;font-size:.92rem;color:var(--ink)}
+  .g-badge .stars{color:var(--gold);letter-spacing:2px}
+  .rev-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .rev{background:var(--bg-card);border:1px solid var(--line);border-radius:16px;padding:22px 20px;display:flex;flex-direction:column}
+  .rev .stars{color:var(--gold);letter-spacing:2px;margin-bottom:10px}
+  .rev .stars .off{color:#3a4a70}
+  .rev p{font-size:.94rem;color:var(--ink);margin-bottom:14px;flex:1}
+  .rev .who{display:flex;align-items:center;gap:10px;font-size:.86rem;color:var(--ink-soft)}
+  .rev .who .av{width:32px;height:32px;border-radius:50%;background:var(--teal-soft);color:#dce7ff;
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;flex:0 0 auto}
+  .rev .src{font-size:.76rem;color:var(--ink-soft)}
+  .rev-note{text-align:center;margin-top:14px;font-size:.8rem;color:var(--ink-soft)}
+  @media(max-width:700px){.rev-grid{grid-template-columns:1fr}}
+  /* whatsapp */
+  .wa-btn{position:fixed;right:16px;bottom:calc(28px + env(safe-area-inset-bottom));z-index:70;width:56px;height:56px;border-radius:50%;
+    background:#25d366;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 12px 28px -8px rgba(37,211,102,.65);transition:transform .15s,box-shadow .15s}
+  @media(max-width:700px){.wa-btn{bottom:calc(40px + env(safe-area-inset-bottom));right:14px}}
+  .wa-btn:hover{transform:translateY(-2px);box-shadow:0 16px 32px -8px rgba(37,211,102,.75)}
+  .wa-btn svg{width:29px;height:29px;fill:#fff}
+  @media(max-width:480px){
+    .card{padding:24px 20px}
+    .intro h1{font-size:1.45rem}
+    .step h2{font-size:1.2rem}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}.btn:hover{transform:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><span class="mark" aria-hidden="true">D</span> Dôchodková prognóza</div>
+</header>
+
+<div class="stage">
+  <div class="quiz">
+    <div class="intro">
+      <h1>Rozumieš svojej dôchodkovej <span class="hl-red">prognóze?</span></h1>
+      <p>Odpovedz na 4 krátke otázky a vyber si, s čím ti pomôžeme.</p>
+    </div>
+    <div class="card">
+      <div class="bar" aria-hidden="true"><span id="barfill"></span></div>
+
+      <!-- OTÁZKA 1 -->
+      <div class="step on" data-step="q1">
+        <div class="stepnum">Otázka 1 z 4</div>
+        <h2>Máš dôchodkovú prognózu?</h2>
+        <div class="answers">
+          <button type="button" class="ans" data-q="prognoza" data-v="áno" data-next="q2a">Áno</button>
+          <button type="button" class="ans" data-q="prognoza" data-v="nie" data-next="q2b">Nie</button>
+        </div>
+      </div>
+
+      <!-- OTÁZKA 2A – má prognózu -->
+      <div class="step" data-step="q2a">
+        <div class="stepnum">Otázka 2 z 4</div>
+        <h2>Splnila tvoje očakávania?</h2>
+        <div class="answers">
+          <button type="button" class="ans" data-q="ocakavania" data-v="áno" data-next="q3a">Áno</button>
+          <button type="button" class="ans" data-q="ocakavania" data-v="nie" data-next="q3a">Nie</button>
+        </div>
+        <button type="button" class="back" data-back>← Späť</button>
+      </div>
+
+      <!-- OTÁZKA 2B – nemá prognózu -->
+      <div class="step" data-step="q2b">
+        <div class="stepnum">Otázka 2 z 4</div>
+        <h2>Nemáš ju, pretože…</h2>
+        <div class="answers">
+          <button type="button" class="ans opt" data-q="dovod" data-v="Neprišla mi" data-next="q3b">📭 Neprišla mi</button>
+          <button type="button" class="ans opt" data-q="dovod" data-v="Neviem ju nájsť" data-next="q3b">🔍 Neviem ju nájsť</button>
+        </div>
+        <button type="button" class="back" data-back>← Späť</button>
+      </div>
+
+      <!-- OTÁZKA 3A – má prognózu -->
+      <div class="step" data-step="q3a">
+        <div class="stepnum">Otázka 3 z 4</div>
+        <h2>Myslíš si, že ti naozaj bude od štátu vyplatený taký dôchodok?</h2>
+        <div class="answers">
+          <button type="button" class="ans" data-q="dovera" data-v="áno" data-next="q5">Áno</button>
+          <button type="button" class="ans" data-q="dovera" data-v="nie" data-next="q5">Nie</button>
+        </div>
+        <button type="button" class="back" data-back>← Späť</button>
+      </div>
+
+      <!-- OTÁZKA 3B – nemá prognózu -->
+      <div class="step" data-step="q3b">
+        <div class="stepnum">Otázka 3 z 4</div>
+        <h2>Veríš, že dôchodok a iné dávky od štátu ti pokryjú v budúcnosti mesačné výdaje?</h2>
+        <div class="answers">
+          <button type="button" class="ans" data-q="dovera" data-v="áno" data-next="q5b">Áno</button>
+          <button type="button" class="ans" data-q="dovera" data-v="nie" data-next="q5b">Nie</button>
+        </div>
+        <button type="button" class="back" data-back>← Späť</button>
+      </div>
+
+      <!-- OTÁZKA 5 -->
+      <div class="step" data-step="q5">
+        <div class="stepnum">Otázka 4 z 4</div>
+        <h2>Čo z toho ti dáva najväčší zmysel?</h2>
+        <div class="answers">
+          <button type="button" class="ans opt" data-q="zaujem" data-v="Chcem si prejsť dôchodkovú prognózu detailnejšie" data-next="kontakt">📄 Chcem si prejsť dôchodkovú prognózu detailnejšie</button>
+          <button type="button" class="ans opt" data-q="zaujem" data-v="Chcem navrhnúť plán ako zvýšiť dôchodkový príjem" data-next="kontakt">📈 Chcem navrhnúť plán, ako zvýšiť dôchodkový príjem</button>
+          <button type="button" class="ans opt" data-q="zaujem" data-v="Ako si vytvoriť ďalší príjem z investícií na dôchodok" data-next="kontakt">💬 Ako si vytvoriť ďalší príjem z investícií na dôchodok</button>
+          <button type="button" class="ans opt" data-q="zaujem" data-v="Ako ísť do dôchodku o 5 rokov skôr" data-next="kontakt">⏳ Ako ísť do dôchodku o 5 rokov skôr</button>
+          <button type="button" class="ans opt" data-q="zaujem" data-v="__ine__" data-next="qine">✍️ Iné: doplň</button>
+        </div>
+        <button type="button" class="back" data-back>← Späť</button>
+      </div>
+
+      <!-- OTÁZKA 5B – nemá prognózu -->
+      <div class="step" data-step="q5b">
+        <div class="stepnum">Otázka 4 z 4</div>
+        <h2>Čo z toho ti dáva najväčší zmysel?</h2>
+        <div class="answers">
+          <button type="button" class="ans opt" data-q="zaujem" data-v="Chcem pomôcť získať dôchodkovú prognózu" data-next="kontakt">📄 Chcem pomôcť získať dôchodkovú prognózu</button>
+          <button type="button" class="ans opt" data-q="zaujem" data-v="Chcem navrhnúť ako si zvýšiť dôchodok" data-next="kontakt">📈 Chcem navrhnúť, ako si zvýšiť dôchodok</button>
+          <button type="button" class="ans opt" data-q="zaujem" data-v="Chcem ísť do dôchodku o 5 rokov skôr" data-next="kontakt">⏳ Chcem ísť do dôchodku o 5 rokov skôr</button>
+          <button type="button" class="ans opt" data-q="zaujem" data-v="__ine__" data-next="qine">✍️ Iné: doplň</button>
+        </div>
+        <button type="button" class="back" data-back>← Späť</button>
+      </div>
+
+      <!-- OTÁZKA 5 – INÉ -->
+      <div class="step" data-step="qine">
+        <div class="stepnum">Otázka 4 z 4</div>
+        <h2>Doplň, čo ťa zaujíma</h2>
+        <div class="field" id="f-ine">
+          <label for="ine">Napíš vlastnými slovami</label>
+          <input type="text" id="ine" placeholder="napr. chcem sa opýtať na II. pilier">
+          <span class="err">Napíš prosím aspoň pár slov.</span>
+        </div>
+        <button type="button" class="btn" id="ine-next">Pokračovať</button>
+        <button type="button" class="back" data-back>← Späť</button>
+      </div>
+
+      <!-- KONTAKT -->
+      <div class="step" data-step="kontakt">
+        <div class="stepnum">Posledný krok</div>
+        <h2>Vyplň prosím kontakt a ozveme sa ti</h2>
+        <form id="leadform" novalidate>
+          <div class="hp" aria-hidden="true">
+            <label>Nevypĺňaj toto pole<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+          </div>
+          <div class="field" id="f-meno">
+            <label for="meno">Krstné meno</label>
+            <input type="text" id="meno" autocomplete="given-name">
+            <span class="err">Zadaj prosím svoje meno.</span>
+          </div>
+          <div class="field" id="f-email">
+            <label for="email">Email</label>
+            <input type="email" id="email" autocomplete="email">
+            <span class="err">Zadaj prosím platný e-mail.</span>
+          </div>
+          <div class="field" id="f-tel">
+            <label for="tel">T.č. <span style="font-weight:500;color:var(--ink-soft)">(dobrovoľné)</span></label>
+            <input type="tel" id="tel" autocomplete="tel" placeholder="+421 900 000 000">
+            <span class="err">Zadaj prosím platné telefónne číslo.</span>
+          </div>
+          <div class="field" id="f-sprava">
+            <label for="sprava">Chceš nám ešte niečo napísať? <span style="font-weight:500;color:var(--ink-soft)">(dobrovoľné)</span></label>
+            <textarea id="sprava" rows="3" placeholder="Napíš, o čo konkrétne žiadaš alebo čo ťa zaujíma…" style="width:100%;border:1px solid var(--line);border-radius:12px;padding:13px 15px;font-size:1rem;font-family:inherit;background:#141d33;color:var(--ink);resize:vertical"></textarea>
+          </div>
+          <div class="consent" id="f-consent">
+            <input type="checkbox" id="consent">
+            <label for="consent">Súhlasím so spracovaním osobných údajov na účely spätného kontaktovania a oboznámil/a som sa so <a href="[DOPLNIŤ ODKAZ NA ZÁSADY OCHRANY OSOBNÝCH ÚDAJOV]" target="_blank" rel="noopener">zásadami ochrany osobných údajov</a>.</label>
+          </div>
+          <button type="submit" class="btn">Odoslať</button>
+          <span class="micro">Tvoje údaje použijeme iba na to, aby sme sa ti ozvali. Bez spamu.</span>
+        </form>
+        <button type="button" class="back" data-back>← Späť</button>
+      </div>
+
+      <!-- ĎAKUJEME -->
+      <div class="step success" data-step="done">
+        <div class="ok" aria-hidden="true">✓</div>
+        <h2>Ďakujeme, máme to!</h2>
+        <p>Čoskoro sa ti ozveme a spolu si prejdeme, čo ťa zaujíma.</p>
+        <p><strong id="done-tip">Priprav si svoju dôchodkovú prognózu, nech sa vieme pozrieť na konkrétne čísla.</strong></p>
+      </div>
+
+    </div>
+
+    <!-- GOOGLE RECENZIE -->
+    <div class="reviews" aria-labelledby="rev-title">
+      <h2 id="rev-title">Čo hovoria klienti</h2>
+      <div class="rev-head">
+        <span class="g-badge"><span class="stars" aria-hidden="true">★★★★★</span> Recenzie klientov na Google</span>
+      </div>
+      <div class="rev-grid">
+        <div class="rev">
+          <div class="stars" aria-hidden="true">★★★★★</div>
+          <p>„Prácu a poradenstvo Daniela Franeka hodnotím veľmi pozitívne. Najviac oceňujem jeho profesionálny a zároveň ľudský prístup. Vždy si na nás vyhradil dostatok času, všetko nám trpezlivo vysvetlil do detailov a ochotne odpovedal na každú otázku. Počas celého procesu sme mali istotu, že nám odporúča riešenia, ktoré sú pre nás naozaj najvýhodnejšie. Ďakujeme za skvelú spoluprácu a jeho služby určite odporúčame aj ostatným.“</p>
+          <div class="who"><span class="av" aria-hidden="true">M</span><span>Margaréta Blanárová<br><span class="src">Google recenzia</span></span></div>
+        </div>
+        <div class="rev">
+          <div class="stars" aria-hidden="true">★★★★★</div>
+          <p>„Ochota v každom možnom pripade, odporučam. Spolupracujeme minimalne 5 rokov a zatial nemam žiadne negativa , ktore by som mohol vytknuť.“</p>
+          <div class="who"><span class="av" aria-hidden="true">A</span><span>Autocentrum Jašurek<br><span class="src">Google recenzia</span></span></div>
+        </div>
+        <div class="rev">
+          <div class="stars" aria-hidden="true">★★★★★</div>
+          <p>„S Danielom sme boli veľmi spokojný, je milý, ústretový a má profesionálny prístup. Dokáže vyriešiť aj nevyriešiteľný problém za čo mu ďakujeme. Odporúčame ho kontaktovať.“</p>
+          <div class="who"><span class="av" aria-hidden="true">M</span><span>Michal Melišík<br><span class="src">Google recenzia</span></span></div>
+        </div>
+        <div class="rev">
+          <div class="stars" aria-hidden="true">★★★★<span class="off">★</span></div>
+          <p>„Som maximálne spokojný, sme tam celá rodina, rodičia aj sestra s deťmi a sú spokojný. Mám veľmi dobrú skúsenosť, aj aj pristupnosť je profesionalna. Keď som potreboval vytiahnuť, peniaze dorazili ešte skôr ako som predpokladal čiže úplna spokojnosť.“</p>
+          <div class="who"><span class="av" aria-hidden="true">M</span><span>Marek Vrúbeľ<br><span class="src">Google recenzia</span></span></div>
+        </div>
+      </div>
+      <p class="rev-note">Skutočné recenzie z Google profilu <a href="https://www.google.com/search?sca_esv=31a84013ae363f98&sxsrf=APpeQnsjZXsRZvxAWESQbgwmnFsFfRf8XA:1784548916569&q=NGinvestors+-+Daniel+Franek&si=APenkKmVGdgpMPDQZoEWS8RIAhsqXAKlNLP0B8DNkkiU9KPI0X7vrLDV3J3uXzi5oYZBzWXF_UM361lYSTiIZsJoE0j8t0Nk98sUMSZ_7ss6J4-gAwJNBKBIzUshHYeFlFVn6JI7utvs&sa=X&ved=2ahUKEwiJuoXimuGVAxWuZ_EDHb2rG_YQ_coHegQIJRAB" target="_blank" rel="noopener" style="color:var(--teal);font-weight:600">Daniel Franek</a>.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- WhatsApp – POZOR: nahradiť [DOPLNIŤ ČÍSLO] reálnym číslom v medzinárodnom formáte bez medzier, napr. 421903123456 -->
+<a class="wa-btn" href="https://wa.me/421914278500?text=Ahoj%2C%20mám%20otázku%20k%20dôchodkovej%20prognóze." target="_blank" rel="noopener" aria-label="Napísať cez WhatsApp">
+  <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16.04 3C9.42 3 4.05 8.36 4.05 14.97c0 2.11.55 4.16 1.6 5.97L4 29l8.24-2.6a12 12 0 0 0 3.8.62h.01c6.61 0 11.98-5.36 11.98-11.97C28.03 8.36 22.65 3 16.04 3zm0 21.99h-.01a9.96 9.96 0 0 1-3.4-.6l-.68-.25-4.89 1.54 1.58-4.77-.3-.7a9.93 9.93 0 0 1-1.42-5.24c0-5.5 4.48-9.97 9.99-9.97 5.5 0 9.98 4.47 9.98 9.97s-4.48 10.02-9.85 10.02zm5.47-7.47c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.68-1.62-.93-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.5 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
+</a>
+
+<footer>
+  Odpovede slúžia len na prípravu rozhovoru. Nejde o poradenstvo ani garanciu. © 2026 · <span class="fill">[DOPLNIŤ OBCHODNÉ ÚDAJE]</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* Sem vlož URL webovej aplikácie Google Apps Script (končí na /exec).
+     Návod: pozri súbor "google-tabulka-navod" – skript zapíše každé odoslanie
+     ako nový riadok do tvojej Google Tabuľky.
+     Kým je prázdny, odoslanie iba zobrazí poďakovanie. */
+  var FORM_ENDPOINT = ""; /* [DOPLNIŤ URL APPS SCRIPT WEBAPP /exec] */
+
+  var answers = {};
+  var hist = [];
+  var current = "q1";
+  var PROG = {q1:0, q2a:1, q2b:1, q3a:2, q3b:2, q5:3, q5b:3, qine:3.5, kontakt:4, done:5};
+
+  function show(id){
+    document.querySelectorAll('.step').forEach(function(st){
+      st.classList.toggle('on', st.dataset.step === id);
+    });
+    current = id;
+    var p = (PROG[id] !== undefined ? PROG[id] : 0) / 5 * 100;
+    document.getElementById('barfill').style.width = Math.max(p, 6) + '%';
+    document.querySelector('.card').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  function go(id){ hist.push(current); show(id); }
+
+  document.querySelectorAll('.ans').forEach(function(b){
+    b.addEventListener('click', function(){
+      if (b.dataset.v !== '__ine__') { answers[b.dataset.q] = b.dataset.v; }
+      go(b.dataset.next);
+    });
+  });
+
+  document.querySelectorAll('[data-back]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var prev = hist.pop();
+      if (prev) { show(prev); }
+    });
+  });
+
+  document.getElementById('ine-next').addEventListener('click', function(){
+    var t = document.getElementById('ine').value.trim();
+    var bad = t.length < 3;
+    document.getElementById('f-ine').classList.toggle('invalid', bad);
+    if (bad) { document.getElementById('ine').focus(); return; }
+    answers.zaujem = 'Iné: ' + t;
+    go('kontakt');
+  });
+  document.getElementById('ine').addEventListener('keydown', function(e){
+    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('ine-next').click(); }
+  });
+
+  var form = document.getElementById('leadform');
+  function setInvalid(id, invalid){
+    document.getElementById(id).classList.toggle('invalid', invalid);
+    return !invalid;
+  }
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if (form.website && form.website.value) { return; }
+
+    var ok = true;
+    ok = setInvalid('f-meno', document.getElementById('meno').value.trim().length < 2) && ok;
+    ok = setInvalid('f-email', !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(document.getElementById('email').value)) && ok;
+    var telVal = document.getElementById('tel').value.trim();
+    ok = setInvalid('f-tel', telVal !== '' && !/^[+0-9][0-9\s\/().-]{7,17}$/.test(telVal)) && ok;
+    var consentOk = document.getElementById('consent').checked;
+    document.getElementById('f-consent').classList.toggle('invalid', !consentOk);
+    ok = ok && consentOk;
+    if (!ok) { return; }
+
+    var data = {
+      prognoza: answers.prognoza || '',
+      dovod: answers.dovod || '',
+      ocakavania: answers.ocakavania || '',
+      dovera: answers.dovera || '',
+      vek: answers.vek || '',
+      zaujem: answers.zaujem || '',
+      meno: document.getElementById('meno').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      tel: telVal,
+      sprava: document.getElementById('sprava').value.trim(),
+      source: 'dochodkova-prognoza-quiz',
+      ts: new Date().toISOString()
+    };
+
+    function done(){
+      /* záverečný tip podľa toho, či človek prognózu má */
+      var tip = document.getElementById('done-tip');
+      if (answers.prognoza === 'nie') {
+        tip.textContent = 'Prognózu zatiaľ nemáš? Nevadí – ukážeme ti, ako ju získať, a spolu si prejdeme tvoje možnosti.';
+      } else {
+        tip.textContent = 'Priprav si svoju dôchodkovú prognózu, nech sa vieme pozrieť na konkrétne čísla.';
+      }
+      show('done');
+      document.getElementById('barfill').style.width = '100%';
+      if (typeof gtag === 'function') { gtag('event','generate_lead',{event_category:'quiz',event_label:'dochodkova-prognoza'}); }
+      if (typeof fbq === 'function') { fbq('track','Lead'); }
+    }
+
+    if (FORM_ENDPOINT) {
+      var btn = form.querySelector('button[type=submit]');
+      btn.disabled = true; btn.textContent = 'Odosielam…';
+      fetch(FORM_ENDPOINT, {
+        method:'POST',
+        mode:'no-cors',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:new URLSearchParams(data).toString()
+      }).then(done)
+        .catch(function(){ btn.disabled=false; btn.textContent='Odoslať'; alert('Odoslanie sa nepodarilo, skús to prosím znova.'); });
+    } else {
+      done();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
