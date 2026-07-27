@@ -37,7 +37,7 @@
   .intro h1{font-size:1.75rem;margin-bottom:8px}
   .intro p{font-size:1.02rem}
   .card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);
-    padding:32px 30px;box-shadow:var(--shadow)}
+    padding:32px 30px;box-shadow:var(--shadow);overflow-anchor:none}
   /* progress */
   .bar{height:8px;background:var(--teal-soft);border-radius:999px;overflow:hidden;margin-bottom:26px}
   .bar span{display:block;height:100%;width:0;background:var(--teal);border-radius:999px;transition:width .25s ease}
@@ -330,15 +330,21 @@
   var PROG = {q1:0, q2a:1, q2b:1, q3a:2, q3b:2, q5:3, q5b:3, qine:3.5, kontakt:4, done:5};
 
   function show(id){
+    var scrollX = window.scrollX;
+    var scrollY = window.scrollY;
     document.querySelectorAll('.step').forEach(function(st){
       st.classList.toggle('on', st.dataset.step === id);
     });
     current = id;
     var p = (PROG[id] !== undefined ? PROG[id] : 0) / 5 * 100;
     document.getElementById('barfill').style.width = Math.max(p, 6) + '%';
-    document.querySelector('.card').scrollIntoView({behavior:'smooth', block:'start'});
+    window.scrollTo(scrollX, scrollY);
   }
   function go(id){ hist.push(current); show(id); }
+
+  document.querySelectorAll('.ans, .back, #ine-next').forEach(function(b){
+    b.addEventListener('mousedown', function(e){ e.preventDefault(); });
+  });
 
   document.querySelectorAll('.ans').forEach(function(b){
     b.addEventListener('click', function(){
