@@ -326,6 +326,20 @@
   var current = "q1";
   var PROG = {q1:0, q2a:1, q2b:1, q3a:2, q3b:2, q5:3, q5b:3, qine:3.5, kontakt:4, done:5};
 
+  function bratislavaTimestamp(){
+    var parts = new Intl.DateTimeFormat('sk-SK', {
+      timeZone: 'Europe/Bratislava',
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit',
+      hour12: false
+    }).formatToParts(new Date());
+    function part(type){
+      return parts.find(function(p){ return p.type === type; }).value;
+    }
+    return part('day') + '.' + part('month') + '.' + part('year') + ' ' +
+      part('hour') + ':' + part('minute') + ':' + part('second');
+  }
+
   function show(id, opts){
     var scrollToCard = opts && opts.scrollToCard;
     var scrollX = window.scrollX;
@@ -412,7 +426,7 @@
       tel: telVal,
       sprava: document.getElementById('sprava').value.trim(),
       source: 'dochodkova-prognoza-quiz',
-      ts: new Date().toISOString()
+      ts: bratislavaTimestamp()
     };
 
     function done(){
