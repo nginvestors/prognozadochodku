@@ -317,11 +317,9 @@
 (function(){
   "use strict";
 
-  /* Sem vlož URL webovej aplikácie Google Apps Script (končí na /exec).
-     Návod: pozri súbor "google-tabulka-navod" – skript zapíše každé odoslanie
-     ako nový riadok do tvojej Google Tabuľky.
-     Kým je prázdny, odoslanie iba zobrazí poďakovanie. */
-  var FORM_ENDPOINT = ""; /* [DOPLNIŤ URL APPS SCRIPT WEBAPP /exec] */
+  /* Make.com webhook – prijme každé odoslanie formulára a odovzdá ho
+     ďalej podľa scenára nastaveného v Make (napr. zápis do Google Tabuľky). */
+  var FORM_ENDPOINT = "https://hook.eu1.make.com/rjgscxvvbdbe8eg8b3915tbr34uueqvp";
 
   var answers = {};
   var hist = [];
