@@ -37,7 +37,7 @@
   .intro h1{font-size:1.75rem;margin-bottom:8px}
   .intro p{font-size:1.02rem}
   .card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);
-    padding:32px 30px;box-shadow:var(--shadow);overflow-anchor:none}
+    padding:32px 30px;box-shadow:var(--shadow);overflow-anchor:none;scroll-margin-top:16px}
   /* progress */
   .bar{height:8px;background:var(--teal-soft);border-radius:999px;overflow:hidden;margin-bottom:26px}
   .bar span{display:block;height:100%;width:0;background:var(--teal);border-radius:999px;transition:width .25s ease}
@@ -326,7 +326,8 @@
   var current = "q1";
   var PROG = {q1:0, q2a:1, q2b:1, q3a:2, q3b:2, q5:3, q5b:3, qine:3.5, kontakt:4, done:5};
 
-  function show(id){
+  function show(id, opts){
+    var scrollToCard = opts && opts.scrollToCard;
     var scrollX = window.scrollX;
     var scrollY = window.scrollY;
     document.querySelectorAll('.step').forEach(function(st){
@@ -335,7 +336,18 @@
     current = id;
     var p = (PROG[id] !== undefined ? PROG[id] : 0) / 5 * 100;
     document.getElementById('barfill').style.width = Math.max(p, 6) + '%';
-    window.scrollTo(scrollX, scrollY);
+    if (scrollToCard) {
+      /* Krátka sekcia "Ďakujeme" je oveľa kratšia než formulár pred ňou –
+         zachovanie starej scroll pozície by ju na mobile schovalo pod
+         viditeľnú časť obrazovky, preto ju sem vedome doscrollujeme. */
+      if (document.activeElement && document.activeElement.blur) { document.activeElement.blur(); }
+      setTimeout(function(){
+        var card = document.querySelector('.card');
+        if (card) { card.scrollIntoView({behavior:'smooth', block:'start'}); }
+      }, 60);
+    } else {
+      window.scrollTo(scrollX, scrollY);
+    }
   }
   function go(id){ hist.push(current); show(id); }
 
@@ -411,7 +423,7 @@
       } else {
         tip.textContent = 'Priprav si svoju dôchodkovú prognózu, nech sa vieme pozrieť na konkrétne čísla.';
       }
-      show('done');
+      show('done', {scrollToCard:true});
       document.getElementById('barfill').style.width = '100%';
       if (typeof gtag === 'function') { gtag('event','generate_lead',{event_category:'quiz',event_label:'dochodkova-prognoza'}); }
       if (typeof fbq === 'function') { fbq('track','Lead'); }
