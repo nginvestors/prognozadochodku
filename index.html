@@ -356,6 +356,44 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
   var current = "q1";
   var PROG = {q1:0, q2a:1, q2b:1, q3a:2, q3b:2, q5:3, q5b:3, qine:3.5, kontakt:4, done:5};
 
+  var TRACKING_KEY = 'ng_quiz_tracking';
+  var TRACKING_TTL = 30 * 60 * 1000;
+  var STEP_EVENT = {q1:'Q1_sent', q2a:'Q2_sent', q2b:'Q2_sent', q3a:'Q3_sent', q3b:'Q3_sent', q5:'Q4_sent', q5b:'Q4_sent'};
+
+  window.dataLayer = window.dataLayer || [];
+
+  function getTrackingSession(){
+    try {
+      var raw = sessionStorage.getItem(TRACKING_KEY);
+      if (!raw) return null;
+      var data = JSON.parse(raw);
+      if (Date.now() > data.expires) {
+        sessionStorage.removeItem(TRACKING_KEY);
+        return null;
+      }
+      return data;
+    } catch (e) { return null; }
+  }
+
+  function pushTrackingEvent(eventName, params){
+    var session = getTrackingSession();
+    if (!session) { session = { expires: Date.now() + TRACKING_TTL, fired: {} }; }
+    if (session.fired[eventName]) return;
+    session.fired[eventName] = true;
+    try { sessionStorage.setItem(TRACKING_KEY, JSON.stringify(session)); } catch (e) {}
+    var payload = { event: eventName };
+    if (params) {
+      Object.keys(params).forEach(function(k){ payload[k] = params[k]; });
+    }
+    window.dataLayer.push(payload);
+  }
+
+  function trackQuestionSent(step, questionKey, answerValue){
+    var eventName = STEP_EVENT[step];
+    if (!eventName) return;
+    pushTrackingEvent(eventName, { quiz_question: questionKey, quiz_answer: answerValue });
+  }
+
   function bratislavaTimestamp(){
     var parts = new Intl.DateTimeFormat('sk-SK', {
       timeZone: 'Europe/Bratislava',
@@ -401,7 +439,10 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
 
   document.querySelectorAll('.ans').forEach(function(b){
     b.addEventListener('click', function(){
-      if (b.dataset.v !== '__ine__') { answers[b.dataset.q] = b.dataset.v; }
+      if (b.dataset.v !== '__ine__') {
+        answers[b.dataset.q] = b.dataset.v;
+        trackQuestionSent(current, b.dataset.q, b.dataset.v);
+      }
       go(b.dataset.next);
     });
   });
@@ -419,6 +460,7 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
     document.getElementById('f-ine').classList.toggle('invalid', bad);
     if (bad) { document.getElementById('ine').focus(); return; }
     answers.zaujem = 'Iné: ' + t;
+    pushTrackingEvent('Q4_sent', { quiz_question: 'zaujem', quiz_answer: answers.zaujem });
     go('kontakt');
   });
   document.getElementById('ine').addEventListener('keydown', function(e){
@@ -426,6 +468,15 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
   });
 
   var form = document.getElementById('leadform');
+  ['meno', 'email', 'tel', 'sprava'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', function(){
+      if (current === 'kontakt') {
+        pushTrackingEvent('form_start', { form_step: 'kontakt' });
+      }
+    });
+  });
   function setInvalid(id, invalid){
     document.getElementById(id).classList.toggle('invalid', invalid);
     return !invalid;
@@ -469,8 +520,7 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
       }
       show('done', {scrollToCard:true});
       document.getElementById('barfill').style.width = '100%';
-      if (typeof gtag === 'function') { gtag('event','generate_lead',{event_category:'quiz',event_label:'dochodkova-prognoza'}); }
-      if (typeof fbq === 'function') { fbq('track','Lead'); }
+      pushTrackingEvent('form_submit', { source: 'dochodkova-prognoza-quiz' });
     }
 
     if (FORM_ENDPOINT) {
