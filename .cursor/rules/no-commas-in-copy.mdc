@@ -1,0 +1,39 @@
+---
+description: Zakaz ciarky v copy textoch – nikdy nepouzivat ciarku v UI ani marketingovych textoch
+alwaysApply: true
+---
+
+# Zakaz ciarky v textoch
+
+Pri tvorbe aj uprave **akehokolvek** textu na webe (headline, podtext, tlacidla, quiz, formular, recenzie, meta, chybove hlasky, trust riadky, atď.) **nikdy nepouzivaj znak ciarky `,`**.
+
+Platí pre:
+- nove texty
+- existujuce texty (pri uprave odstráň všetky ciarky)
+
+## Jedina vynimka
+
+Povolene su iba vekove vyrazy v tvare s pomlckou, napr.:
+- `66-ky`
+- `do 66-ky`
+- `od 40-ky`
+
+Nie: `66,` ani `66,5` v copy. Ak treba cislo s desatinami, prepis bez ciarky alebo inak (napr. cele cislo).
+
+## Ako pisat bez ciarky
+
+- Namiesto vety s ciarkou pouzi kratšie vety alebo pomlcku `–` / spojku `a`.
+- Zoznamy pis bez ciarky – oddel pomlckou, „a“, alebo novym riadkom.
+
+```html
+<!-- BAD -->
+<p>Bezplatne ti vysvetlím prognózu a ukážem, ako si vytvoriť príjem.</p>
+
+<!-- GOOD -->
+<p>Bezplatne ti vysvetlím prognózu a ukážem ako si vytvoriť príjem.</p>
+
+<!-- GOOD – vekova vynimka -->
+<p>…aby si nečakal na štát do 66-ky.</p>
+```
+
+Pred odovzdanim textu skontroluj: v copy nesmie byt ziadna `,` okrem pripustnych vekovych tvarov s pomlckou (nie s ciarkou).
