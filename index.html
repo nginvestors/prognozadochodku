@@ -22,6 +22,9 @@ fbq('init', '1402052265114481');
 fbq('track', 'PageView');
 </script>
 <!-- End Meta Pixel Code -->
+<!-- Umami Analytics -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="4c045484-2a6f-48d8-ae19-ffcb4e93fb20"></script>
+<!-- End Umami Analytics -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dôchodková prognóza · krátky dotazník</title>
@@ -732,6 +735,9 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
       Object.keys(params).forEach(function(k){ payload[k] = params[k]; });
     }
     window.dataLayer.push(payload);
+    if (window.umami && typeof window.umami.track === 'function') {
+      window.umami.track(eventName, params || {});
+    }
   }
 
   function trackQuestionSent(step, questionKey, answerValue){
