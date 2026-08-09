@@ -1,0 +1,7 @@
+{
+  "name": "prognoza-dochodku",
+  "private": true,
+  "scripts": {
+    "dev": "npx --yes serve -l 3000"
+  }
+}
