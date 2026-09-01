@@ -27,8 +27,8 @@ fbq('track', 'PageView');
 <!-- End Umami Analytics -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dôchodková prognóza · krátky dotazník</title>
-<meta name="description" content="Odpovedz na 4 krátke otázky o svojej dôchodkovej prognóze a vyber si s čím ti môžeme pomôcť.">
+<title>Platíš si minimálne odvody</title>
+<meta name="description" content="Zanechaj kontakt a získaj plán ako sa nespoliehať na štátny dôchodok.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -61,10 +61,13 @@ fbq('track', 'PageView');
     display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem}
   .stage{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:0 18px 40px}
   .quiz{width:100%;max-width:1140px}
-  .hero{text-align:center;max-width:900px;margin:0 auto;padding:var(--section-pad) 20px}
-  .hero h1{font-size:clamp(1.7rem,4.2vw,2.65rem);margin-bottom:28px;line-height:1.55}
-  .hero p{font-size:clamp(.98rem,1.9vw,1.12rem);color:var(--ink);max-width:720px;margin:0 auto 36px;line-height:1.55}
-  .hero .btn{width:auto;display:inline-flex;padding:18px 36px;font-size:1.12rem;margin-bottom:36px}
+  .hero{text-align:center;max-width:1140px;margin:0 auto;padding:var(--section-pad) 20px}
+  .hero h1{font-size:clamp(1.5rem,4.4vw,3.45rem);margin-bottom:28px;line-height:1.35;text-wrap:pretty}
+  .hero p{font-size:clamp(1.08rem,2.15vw,1.26rem);color:var(--ink);max-width:980px;margin:0 auto 36px;line-height:1.55}
+  .hero p.hero-badge{display:inline-block;background:rgba(238,28,37,.7);color:#fff;font-weight:700;
+    font-size:clamp(.78rem,1.5vw,.95rem);padding:.32em .7em;border-radius:8px;margin:0 auto 20px;
+    line-height:1.4;max-width:38em;text-wrap:balance}
+  .hero .btn{width:auto;display:inline-flex;padding:18px clamp(10px,3vw,36px);margin-bottom:36px}
   .hero-trust{display:flex;align-items:center;justify-content:center;gap:18px 28px;flex-wrap:wrap;
     font-size:.92rem;color:var(--ink-soft)}
   .hero-trust .stars{color:var(--gold);letter-spacing:2px;margin-right:4px}
@@ -76,42 +79,33 @@ fbq('track', 'PageView');
     padding:36px 32px;
     box-shadow:var(--shadow),0 0 0 1px rgba(0,0,0,.25),0 12px 40px -20px rgba(0,0,0,.55);
     overflow-anchor:none;scroll-margin-top:16px}
-  /* progress */
-  .bar{height:8px;background:var(--teal-soft);border-radius:999px;overflow:hidden;margin-bottom:26px}
-  .bar span{display:block;height:100%;width:0;background:var(--teal);border-radius:999px;transition:width .25s ease}
-  .stepnum{font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
-  /* steps */
-  .step{display:none}
-  .step.on{display:block}
-  .step h2{font-size:1.1rem;font-weight:700;margin-bottom:18px;line-height:1.4;letter-spacing:0}
-  .answers{display:grid;gap:20px}
-  .ans{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
-    background:var(--bg);border:2px solid var(--line);border-radius:14px;padding:16px 18px;
-    font-size:1.05rem;font-weight:700;color:var(--ink);cursor:pointer;font-family:inherit;text-align:center;
-    transition:border-color .12s, background .12s}
-  .ans:hover{border-color:var(--teal);background:var(--teal-soft)}
-  .ans.opt{font-weight:600;text-align:left;justify-content:flex-start;font-size:1rem}
+  .fields-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   .field{margin-bottom:22px}
   .field label{display:block;font-weight:700;font-size:.95rem;margin-bottom:7px}
+  .field .opt{font-weight:500;color:var(--ink-soft)}
   .field input{width:100%;border:1px solid var(--line);border-radius:12px;padding:13px 15px;
     font-size:1.05rem;font-family:inherit;background:#141d33;color:var(--ink)}
+  .field input::placeholder{color:var(--ink-soft);opacity:.75}
   .field input:focus{border-color:var(--teal)}
   .field .err{display:none;color:#ff8177;font-size:.85rem;margin-top:5px}
   .field.invalid input{border-color:#ff8177}
   .field.invalid .err{display:block}
+  .field-hint{display:block;margin-top:7px;font-size:.86rem;color:var(--ink-soft);font-weight:500}
   .consent{display:flex;gap:10px;align-items:flex-start;margin:18px 0;font-size:.86rem;color:var(--ink-soft)}
   .consent input{width:18px;height:18px;margin-top:2px;flex:0 0 auto;accent-color:var(--teal)}
   .consent a{color:var(--teal);font-weight:600}
   .consent.invalid label{color:#ff8177}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;width:100%;
-    background:var(--amber);color:#fff;text-decoration:none;font-weight:700;font-size:1.06rem;
-    padding:16px 28px;border-radius:999px;border:none;cursor:pointer;font-family:inherit;
+    background:var(--amber);color:#fff;text-decoration:none;font-weight:700;
+    font-size:clamp(.72rem,calc((100vw - 3rem)/22),1.12rem);white-space:nowrap;
+    padding:16px clamp(8px,2.2vw,36px);border-radius:999px;border:none;cursor:pointer;font-family:inherit;
     box-shadow:0 14px 28px -12px rgba(238,28,37,.5);transition:transform .15s,box-shadow .15s}
   .btn:hover{transform:translateY(-2px);box-shadow:0 20px 34px -12px rgba(238,28,37,.6)}
   .btn:active{transform:translateY(0)}
-  .back{display:inline-block;margin-top:18px;background:none;border:none;color:var(--ink-soft);
-    font-size:.9rem;cursor:pointer;font-family:inherit;text-decoration:underline}
   .micro{display:block;margin-top:12px;font-size:.82rem;color:var(--ink-soft);text-align:center}
+  .wa-direct{text-align:center;margin:16px 0 0}
+  .wa-direct a{color:#25d366;font-weight:700;text-decoration:none}
+  .wa-direct a:hover{text-decoration:underline}
   .hp{position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden}
   /* success */
   .ok{width:64px;height:64px;border-radius:50%;background:var(--teal-soft);color:var(--teal);
@@ -152,7 +146,7 @@ fbq('track', 'PageView');
     .control-grid{grid-template-columns:1fr;max-width:480px;margin:0 auto;gap:16px}
   }
   @media(max-width:700px){
-    .control-cta .btn{width:100%;max-width:360px}
+    .control-cta .btn{width:100%;max-width:420px}
     .pain-list{gap:24px}
     .pain-item{gap:16px}
     .pain-ico{width:34px;height:34px;margin-top:2px}
@@ -211,7 +205,7 @@ fbq('track', 'PageView');
   .rev-cta .btn{width:auto;display:inline-flex;padding:16px 32px}
   @media(max-width:700px){
     .rev-grid{grid-template-columns:1fr}
-    .rev-cta .btn{width:100%;max-width:360px}
+    .rev-cta .btn{width:100%;max-width:420px}
   }
   /* o mne */
   .about{width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);
@@ -261,7 +255,7 @@ fbq('track', 'PageView');
     .trust-grid{grid-template-columns:1fr;max-width:360px;margin:0 auto}
     .trust-tab{border-right:none;border-bottom:1px solid rgba(185,195,217,.28);padding:22px 16px}
     .trust-tab:last-child{border-bottom:none}
-    .trust-cta .btn{width:100%;max-width:360px}
+    .trust-cta .btn{width:100%;max-width:420px}
   }
   /* faq */
   .faq{width:100%;max-width:1140px;margin:0 auto;padding:var(--section-pad) 4px}
@@ -288,7 +282,7 @@ fbq('track', 'PageView');
   .endcta-inner{width:100%;max-width:900px;margin:0 auto}
   .endcta h2{font-size:clamp(1.75rem,3.8vw,2.5rem);margin-bottom:18px;line-height:1.55;max-width:820px;margin-left:auto;margin-right:auto}
   .endcta > .endcta-inner > p{font-size:clamp(1.05rem,2.1vw,1.2rem);color:var(--ink);max-width:720px;margin:0 auto 28px;line-height:1.55;font-weight:500}
-  .endcta .btn{width:auto;display:inline-flex;padding:18px 36px;font-size:1.12rem;margin-bottom:28px}
+  .endcta .card .btn{width:100%;margin-bottom:0}
   .endcta-trust{display:flex;align-items:center;justify-content:center;gap:10px 0;flex-wrap:wrap;
     font-size:.95rem;color:var(--ink);font-weight:600;margin-bottom:40px}
   .endcta-trust span{display:inline-flex;align-items:center;gap:10px;padding:0 14px}
@@ -298,7 +292,8 @@ fbq('track', 'PageView');
   .endcta .card{border-color:rgba(59,125,224,.28);
     box-shadow:var(--shadow),0 0 0 1px rgba(0,0,0,.25),0 12px 40px -20px rgba(0,0,0,.55)}
   @media(max-width:480px){
-    .endcta .btn{width:100%;padding:16px 22px;font-size:1.02rem}
+    .endcta .card .btn{width:100%;padding:16px clamp(8px,2.2vw,22px)}
+    .fields-row{grid-template-columns:1fr;gap:0}
     .endcta-trust{gap:8px 0;font-size:.84rem}
     .endcta-trust span{padding:0 8px}
     .endcta-trust span:not(:last-child)::after{margin-left:8px}
@@ -314,11 +309,14 @@ fbq('track', 'PageView');
     :root{--section-pad:48px}
     .card{padding:28px 20px}
     .hero{padding:var(--section-pad) 12px}
-    .hero h1{margin-bottom:22px}
-    .hero p{margin-bottom:28px}
-    .hero .btn{width:100%;padding:16px 22px;font-size:1.02rem;margin-bottom:28px}
+    .hero p.hero-badge{width:auto;max-width:22em;font-size:.95rem;padding:.4em .55em;
+      line-height:1.32;text-wrap:unset;text-align:center}
+    .hero h1{font-size:clamp(1.45rem,6.6vw,1.88rem);line-height:1.22;margin-bottom:16px}
+    .hero h1 .hl-blue{padding:.04em .16em}
+    .hero p{font-size:.98rem;line-height:1.5;margin-bottom:22px}
+    .hero .btn{width:100%;padding:16px clamp(8px,2.2vw,16px);margin-bottom:24px}
     .hero-trust{gap:10px 16px;font-size:.82rem}
-    .step h2{font-size:1.05rem}
+    .control-cta .btn,.rev-cta .btn,.trust-cta .btn{padding:16px clamp(8px,2.2vw,16px)}
   }
   @media(prefers-reduced-motion:reduce){*{transition:none!important}.btn:hover{transform:none}}
 </style>
@@ -334,16 +332,13 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code (noscript) -->
 
-<header>
-  <div class="logo"><span class="mark" aria-hidden="true">D</span> Dôchodková prognóza</div>
-</header>
-
 <div class="stage">
   <div class="quiz">
     <div class="hero" data-section="hero">
-      <h1>Staň sa finančne nezávislým živnostníkom ktorý sa už <span class="hl-blue">nemusí spoliehať na prázdne sľuby politikov.</span></h1>
-      <p>Desiatky podnikateľov už využívajú tento systém na budovanie majetku ktorý im môže <strong>zabezpečiť vlastný dôchodok o 6 a viac rokov skôr</strong> než štátny priemer.</p>
-      <a class="btn" href="#cta">Chcem svoj vlastný plán</a>
+      <p class="hero-badge">Pre živnostníkov a podnikateľov, ktorí nechcú byť odkázaní na štát</p>
+      <h1>Vybuduj si príjem, ktorý ti umožní <span class="hl-blue">odchod na dôchodok už&nbsp;v&nbsp;60&#8209;tke</span></h1>
+      <p>Prestaň sa spoliehať na štátnu pokladnicu, ktorej dnes chýba 900 miliónov eur. Počas 20-minútového bezplatného rozhovoru ti ukážem, ako si postaviť vlastný štít, s ktorým si udržíš rovnakú životnú úroveň aj na dôchodku.</p>
+      <a class="btn" href="#cta">Chcem ísť na dôchodok už v 60-tke</a>
       <div class="hero-trust">
         <span><span class="stars" aria-hidden="true">★★★★★</span> recenzie na Google</span>
         <span>Overená stratégia</span>
@@ -415,7 +410,7 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
           </article>
         </div>
         <div class="control-cta">
-          <a class="btn" href="#cta">Chcem svoj vlastný plán</a>
+          <a class="btn" href="#cta">Chcem ísť na dôchodok už v 60-tke</a>
         </div>
       </div>
     </section>
@@ -431,7 +426,7 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
           <div class="flow-num" aria-hidden="true">1</div>
           <div>
             <h3>Zistíme kde dnes stojíš</h3>
-            <p>Odpovieš na <strong>4 kľúčové otázky</strong> o svojej finančnej a dôchodkovej situácii.</p>
+            <p>Vyplníš krátky formulár so svojím kontaktom. Ozvem sa ti a spolu si prejdeme tvoju situáciu.</p>
           </div>
         </article>
         <article class="flow-step">
@@ -497,7 +492,7 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
       </div>
       <p class="rev-note">Skutočné recenzie z Google profilu <a href="https://www.google.com/search?sca_esv=31a84013ae363f98&sxsrf=APpeQnsjZXsRZvxAWESQbgwmnFsFfRf8XA:1784548916569&q=NGinvestors+-+Daniel+Franek&si=APenkKmVGdgpMPDQZoEWS8RIAhsqXAKlNLP0B8DNkkiU9KPI0X7vrLDV3J3uXzi5oYZBzWXF_UM361lYSTiIZsJoE0j8t0Nk98sUMSZ_7ss6J4-gAwJNBKBIzUshHYeFlFVn6JI7utvs&sa=X&ved=2ahUKEwiJuoXimuGVAxWuZ_EDHb2rG_YQ_coHegQIJRAB" target="_blank" rel="noopener" style="color:var(--teal);font-weight:600">Daniel Franek</a>.</p>
       <div class="rev-cta">
-        <a class="btn" href="#cta">Chcem svoj vlastný plán</a>
+        <a class="btn" href="#cta">Chcem ísť na dôchodok už v 60-tke</a>
       </div>
     </div>
 
@@ -543,11 +538,11 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
         </div>
         <div class="trust-tab">
           <span class="trust-val">Do 24 h</span>
-          <span class="trust-label">odpoveď na dotazník</span>
+          <span class="trust-label">odpoveď na formulár</span>
         </div>
       </div>
       <div class="trust-cta">
-        <a class="btn" href="#cta">Chcem svoj vlastný plán</a>
+        <a class="btn" href="#cta">Chcem ísť na dôchodok už v 60-tke</a>
       </div>
     </section>
 
@@ -588,7 +583,7 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
       </div>
     </section>
 
-    <!-- ZÁVEREČNÉ CTA + QUIZ -->
+    <!-- ZÁVEREČNÉ CTA + FORMULÁR -->
     <section class="endcta" id="cta" data-section="cta" aria-labelledby="endcta-title">
       <div class="endcta-inner">
       <h2 id="endcta-title"><span class="hl-red">Prestaň čakať na 66-ky</span> a získaj naspäť svoj čas.</h2>
@@ -600,147 +595,49 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
       </div>
       <div class="form-zone">
       <div class="card">
-        <div class="bar" aria-hidden="true"><span id="barfill"></span></div>
-
-        <!-- OTÁZKA 1 -->
-        <div class="step on" data-step="q1">
-          <div class="stepnum">Otázka 1 z 4</div>
-          <h2>Máš dôchodkovú prognózu?</h2>
-          <div class="answers">
-            <button type="button" class="ans" data-q="prognoza" data-v="áno" data-next="q2a">Áno</button>
-            <button type="button" class="ans" data-q="prognoza" data-v="nie" data-next="q2b">Nie</button>
+        <form id="leadform" novalidate>
+          <div class="hp" aria-hidden="true">
+            <label>Nevypĺňaj toto pole<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
           </div>
-        </div>
-
-        <!-- OTÁZKA 2A: má prognózu -->
-        <div class="step" data-step="q2a">
-          <div class="stepnum">Otázka 2 z 4</div>
-          <h2>Splnila tvoje očakávania?</h2>
-          <div class="answers">
-            <button type="button" class="ans" data-q="ocakavania" data-v="áno" data-next="q3a">Áno</button>
-            <button type="button" class="ans" data-q="ocakavania" data-v="nie" data-next="q3a">Nie</button>
-          </div>
-          <button type="button" class="back" data-back>← Späť</button>
-        </div>
-
-        <!-- OTÁZKA 2B: nemá prognózu -->
-        <div class="step" data-step="q2b">
-          <div class="stepnum">Otázka 2 z 4</div>
-          <h2>Nemáš ju pretože…</h2>
-          <div class="answers">
-            <button type="button" class="ans opt" data-q="dovod" data-v="Neprišla mi" data-next="q3b">📭 Neprišla mi</button>
-            <button type="button" class="ans opt" data-q="dovod" data-v="Neviem ju nájsť" data-next="q3b">🔍 Neviem ju nájsť</button>
-          </div>
-          <button type="button" class="back" data-back>← Späť</button>
-        </div>
-
-        <!-- OTÁZKA 3A: má prognózu -->
-        <div class="step" data-step="q3a">
-          <div class="stepnum">Otázka 3 z 4</div>
-          <h2>Myslíš si že ti naozaj bude od štátu vyplatený taký dôchodok?</h2>
-          <div class="answers">
-            <button type="button" class="ans" data-q="dovera" data-v="áno" data-next="q5">Áno</button>
-            <button type="button" class="ans" data-q="dovera" data-v="nie" data-next="q5">Nie</button>
-          </div>
-          <button type="button" class="back" data-back>← Späť</button>
-        </div>
-
-        <!-- OTÁZKA 3B: nemá prognózu -->
-        <div class="step" data-step="q3b">
-          <div class="stepnum">Otázka 3 z 4</div>
-          <h2>Veríš že dôchodok a iné dávky od štátu ti pokryjú v budúcnosti mesačné výdaje?</h2>
-          <div class="answers">
-            <button type="button" class="ans" data-q="dovera" data-v="áno" data-next="q5b">Áno</button>
-            <button type="button" class="ans" data-q="dovera" data-v="nie" data-next="q5b">Nie</button>
-          </div>
-          <button type="button" class="back" data-back>← Späť</button>
-        </div>
-
-        <!-- OTÁZKA 5 -->
-        <div class="step" data-step="q5">
-          <div class="stepnum">Otázka 4 z 4</div>
-          <h2>Čo z toho ti dáva najväčší zmysel?</h2>
-          <div class="answers">
-            <button type="button" class="ans opt" data-q="zaujem" data-v="Chcem si prejsť dôchodkovú prognózu detailnejšie" data-next="kontakt">📄 Chcem si prejsť dôchodkovú prognózu detailnejšie</button>
-            <button type="button" class="ans opt" data-q="zaujem" data-v="Chcem navrhnúť plán ako zvýšiť dôchodkový príjem" data-next="kontakt">📈 Chcem navrhnúť plán ako zvýšiť dôchodkový príjem</button>
-            <button type="button" class="ans opt" data-q="zaujem" data-v="Ako si vytvoriť ďalší príjem z investícií na dôchodok" data-next="kontakt">💬 Ako si vytvoriť ďalší príjem z investícií na dôchodok</button>
-            <button type="button" class="ans opt" data-q="zaujem" data-v="Ako ísť do dôchodku o 5 rokov skôr" data-next="kontakt">⏳ Ako ísť do dôchodku o 5 rokov skôr</button>
-            <button type="button" class="ans opt" data-q="zaujem" data-v="__ine__" data-next="qine">✍️ Iné: doplň</button>
-          </div>
-          <button type="button" class="back" data-back>← Späť</button>
-        </div>
-
-        <!-- OTÁZKA 5B: nemá prognózu -->
-        <div class="step" data-step="q5b">
-          <div class="stepnum">Otázka 4 z 4</div>
-          <h2>Čo z toho ti dáva najväčší zmysel?</h2>
-          <div class="answers">
-            <button type="button" class="ans opt" data-q="zaujem" data-v="Chcem pomôcť získať dôchodkovú prognózu" data-next="kontakt">📄 Chcem pomôcť získať dôchodkovú prognózu</button>
-            <button type="button" class="ans opt" data-q="zaujem" data-v="Chcem navrhnúť ako si zvýšiť dôchodok" data-next="kontakt">📈 Chcem navrhnúť ako si zvýšiť dôchodok</button>
-            <button type="button" class="ans opt" data-q="zaujem" data-v="Chcem ísť do dôchodku o 5 rokov skôr" data-next="kontakt">⏳ Chcem ísť do dôchodku o 5 rokov skôr</button>
-            <button type="button" class="ans opt" data-q="zaujem" data-v="__ine__" data-next="qine">✍️ Iné: doplň</button>
-          </div>
-          <button type="button" class="back" data-back>← Späť</button>
-        </div>
-
-        <!-- OTÁZKA 5: INÉ -->
-        <div class="step" data-step="qine">
-          <div class="stepnum">Otázka 4 z 4</div>
-          <h2>Doplň čo ťa zaujíma</h2>
-          <div class="field" id="f-ine">
-            <label for="ine">Napíš vlastnými slovami</label>
-            <input type="text" id="ine" placeholder="napr. chcem sa opýtať na II. pilier">
-            <span class="err">Napíš prosím aspoň pár slov.</span>
-          </div>
-          <button type="button" class="btn" id="ine-next">Pokračovať</button>
-          <button type="button" class="back" data-back>← Späť</button>
-        </div>
-
-        <!-- KONTAKT -->
-        <div class="step" data-step="kontakt">
-          <div class="stepnum">Posledný krok</div>
-          <h2>Vyplň prosím kontakt a ozveme sa ti</h2>
-          <form id="leadform" novalidate>
-            <div class="hp" aria-hidden="true">
-              <label>Nevypĺňaj toto pole<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
-            </div>
+          <div class="fields-row">
             <div class="field" id="f-meno">
-              <label for="meno">Krstné meno</label>
-              <input type="text" id="meno" autocomplete="given-name">
+              <label for="meno">Meno</label>
+              <input type="text" id="meno" name="name" autocomplete="given-name" placeholder="Ján">
               <span class="err">Zadaj prosím svoje meno.</span>
             </div>
-            <div class="field" id="f-email">
-              <label for="email">Email</label>
-              <input type="email" id="email" autocomplete="email">
-              <span class="err">Zadaj prosím platný e-mail.</span>
+            <div class="field" id="f-priezvisko">
+              <label for="priezvisko">Priezvisko</label>
+              <input type="text" id="priezvisko" name="surname" autocomplete="family-name" placeholder="Novák">
+              <span class="err">Zadaj prosím svoje priezvisko.</span>
             </div>
-            <div class="field" id="f-tel">
-              <label for="tel">T.č. <span style="font-weight:500;color:var(--ink-soft)">(dobrovoľné)</span></label>
-              <input type="tel" id="tel" autocomplete="tel" placeholder="+421 900 000 000">
-              <span class="err">Zadaj prosím platné telefónne číslo.</span>
-            </div>
-            <div class="field" id="f-sprava">
-              <label for="sprava">Chceš nám ešte niečo napísať? <span style="font-weight:500;color:var(--ink-soft)">(dobrovoľné)</span></label>
-              <textarea id="sprava" rows="3" placeholder="Napíš o čo konkrétne žiadaš alebo čo ťa zaujíma…" style="width:100%;border:1px solid var(--line);border-radius:12px;padding:13px 15px;font-size:1rem;font-family:inherit;background:#141d33;color:var(--ink);resize:vertical"></textarea>
-            </div>
-            <div class="consent" id="f-consent">
-              <input type="checkbox" id="consent">
-              <label for="consent">Súhlasím so spracovaním osobných údajov na účely spätného kontaktovania a oboznámil/a som sa so <a href="https://docs.google.com/document/d/1-Ca5B2XbQ5Q8Jhmso5NieVxFPWDW92E6/edit?usp=sharing" target="_blank" rel="noopener">zásadami ochrany osobných údajov</a>.</label>
-            </div>
-            <button type="submit" class="btn">Odoslať</button>
-            <span class="micro">Tvoje údaje použijeme iba na to aby sme sa ti ozvali. Bez spamu.</span>
-          </form>
-          <button type="button" class="back" data-back>← Späť</button>
-        </div>
-
-        <!-- ĎAKUJEME -->
-        <div class="step success" data-step="done">
+          </div>
+          <div class="field" id="f-email">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" autocomplete="email" inputmode="email" placeholder="jan.novak@email.sk">
+            <span class="err">Zadaj prosím platný e-mail.</span>
+            <span class="field-hint">Sem ti pošlem termín hovoru</span>
+          </div>
+          <div class="field" id="f-tel">
+            <label for="tel">Telefónne číslo <span class="opt">(dobrovoľné)</span></label>
+            <input type="tel" id="tel" name="phone" autocomplete="tel" inputmode="tel" placeholder="+421 900 000 000">
+            <span class="err">Zadaj prosím platné telefónne číslo.</span>
+            <span class="field-hint">Ozvem sa ti na WhatsApp</span>
+          </div>
+          <div class="consent" id="f-consent">
+            <input type="checkbox" id="consent">
+            <label for="consent">Súhlasím so spracovaním osobných údajov na účely spätného kontaktovania a oboznámil/a som sa so <a href="https://docs.google.com/document/d/1-Ca5B2XbQ5Q8Jhmso5NieVxFPWDW92E6/edit?usp=sharing" target="_blank" rel="noopener">zásadami ochrany osobných údajov</a>.</label>
+          </div>
+          <button type="submit" class="btn">Chcem ísť na dôchodok už v 60-tke</button>
+          <span class="micro">Tvoje údaje použijeme iba na to aby sme sa ti ozvali. Bez spamu.</span>
+          <p class="wa-direct">
+            <a href="https://wa.me/421914278500?text=Ahoj%20chcem%20poradiť%20k%20môjmu%20problému." target="_blank" rel="noopener">Máš otázku? Odpíšem ti na WhatsApp</a>
+          </p>
+        </form>
+        <div class="success" id="form-done" hidden>
           <div class="ok" aria-hidden="true">✓</div>
           <h2>Ďakujeme máme to!</h2>
-          <p>Čoskoro sa ti ozveme a spolu si prejdeme čo ťa zaujíma.</p>
-          <p><strong id="done-tip">Priprav si svoju dôchodkovú prognózu nech sa vieme pozrieť na konkrétne čísla.</strong></p>
+          <p>Čoskoro sa ti ozvem a spolu si prejdeme čo ťa zaujíma.</p>
         </div>
-
       </div>
       </div>
       </div>
@@ -754,7 +651,7 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
 </a>
 
 <footer>
-  Odpovede slúžia len na prípravu rozhovoru. Nejde o poradenstvo ani garanciu. © 2026 · NGinvestors s. r. o. · Karpatské námestie 7770/10A · 831 06 Bratislava Rača · IČO: 53050932 · DIČ: 2121280381 · IČ DPH: SK2121280381
+  © 2026 · NGinvestors s. r. o. · Karpatské námestie 7770/10A · 831 06 Bratislava Rača · IČO: 53050932 · DIČ: 2121280381 · IČ DPH: SK2121280381
 </footer>
 
 <script>
@@ -764,15 +661,13 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
   /* Make.com webhook: prijme každé odoslanie formulára a odovzdá ho
      ďalej podľa scenára nastaveného v Make (napr. zápis do Google Tabuľky). */
   var FORM_ENDPOINT = "https://hook.eu1.make.com/rjgscxvvbdbe8eg8b3915tbr34uueqvp";
+  var SUBMIT_LABEL = "Chcem ísť na dôchodok už v 60-tke";
 
-  var answers = {};
-  var hist = [];
-  var current = "q1";
-  var PROG = {q1:0, q2a:1, q2b:1, q3a:2, q3b:2, q5:3, q5b:3, qine:3.5, kontakt:4, done:5};
-
-  var TRACKING_KEY = 'ng_quiz_tracking';
+  /* Ecomail kampaň: do odkazu pridaj
+     ?email=*|EMAIL|*&meno=*|NAME|*&priezvisko=*|SURNAME|*#cta
+     Funguje aj ?ecmid=*|EMAIL|* (Ecomail tracking parameter). */
+  var TRACKING_KEY = 'ng_form_tracking';
   var TRACKING_TTL = 30 * 60 * 1000;
-  var STEP_EVENT = {q1:'Q1_sent', q2a:'Q2_sent', q2b:'Q2_sent', q3a:'Q3_sent', q3b:'Q3_sent', q5:'Q4_sent', q5b:'Q4_sent'};
 
   window.dataLayer = window.dataLayer || [];
 
@@ -856,12 +751,6 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
     checkAll();
   }
 
-  function trackQuestionSent(step, questionKey, answerValue){
-    var eventName = STEP_EVENT[step];
-    if (!eventName) return;
-    pushTrackingEvent(eventName, { quiz_question: questionKey, quiz_answer: answerValue });
-  }
-
   function bratislavaTimestamp(){
     var parts = new Intl.DateTimeFormat('sk-SK', {
       timeZone: 'Europe/Bratislava',
@@ -876,85 +765,111 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
       part('hour') + ':' + part('minute') + ':' + part('second');
   }
 
-  function show(id, opts){
-    var scrollToCard = opts && opts.scrollToCard;
-    var scrollX = window.scrollX;
-    var scrollY = window.scrollY;
-    document.querySelectorAll('.step').forEach(function(st){
-      st.classList.toggle('on', st.dataset.step === id);
-    });
-    current = id;
-    var p = (PROG[id] !== undefined ? PROG[id] : 0) / 5 * 100;
-    document.getElementById('barfill').style.width = Math.max(p, 6) + '%';
-    if (scrollToCard) {
-      /* Krátka sekcia "Ďakujeme" je oveľa kratšia než formulár pred ňou.
-         Zachovanie starej scroll pozície by ju na mobile schovalo pod
-         viditeľnú časť obrazovky preto ju sem vedome doscrollujeme. */
-      if (document.activeElement && document.activeElement.blur) { document.activeElement.blur(); }
-      setTimeout(function(){
-        var card = document.querySelector('.card');
-        if (card) { card.scrollIntoView({behavior:'smooth', block:'start'}); }
-      }, 60);
-    } else {
-      window.scrollTo(scrollX, scrollY);
-    }
+  function isUsableValue(v){
+    if (!v) return false;
+    v = String(v).trim();
+    if (!v) return false;
+    if (/^\*\|.+\|\*$/.test(v)) return false;
+    if (/^\{\{.+\}\}$/.test(v)) return false;
+    return true;
   }
-  function go(id){ hist.push(current); show(id); }
 
-  document.querySelectorAll('.ans, .back, #ine-next').forEach(function(b){
-    b.addEventListener('mousedown', function(e){ e.preventDefault(); });
-  });
-
-  document.querySelectorAll('.ans').forEach(function(b){
-    b.addEventListener('click', function(){
-      if (b.dataset.v !== '__ine__') {
-        answers[b.dataset.q] = b.dataset.v;
-        trackQuestionSent(current, b.dataset.q, b.dataset.v);
+  function readQueryParams(){
+    var params = new URLSearchParams(window.location.search);
+    if (window.location.hash && window.location.hash.indexOf('=') !== -1){
+      var hash = window.location.hash.replace(/^#/, '');
+      if (hash.charAt(0) === '?') hash = hash.slice(1);
+      var hashQuery = hash.indexOf('&') !== -1 || hash.indexOf('=') !== -1 ? hash : '';
+      if (hashQuery) {
+        try {
+          var hashParams = new URLSearchParams(hashQuery);
+          hashParams.forEach(function(v, k){
+            if (!params.has(k)) params.set(k, v);
+          });
+        } catch (e) {}
       }
-      go(b.dataset.next);
-    });
-  });
+    }
+    var map = {};
+    params.forEach(function(v, k){ map[k.toLowerCase()] = v; });
+    return map;
+  }
 
-  document.querySelectorAll('[data-back]').forEach(function(b){
-    b.addEventListener('click', function(){
-      var prev = hist.pop();
-      if (prev) { show(prev); }
-    });
-  });
+  function firstParam(map, names){
+    for (var i = 0; i < names.length; i++){
+      var v = map[names[i].toLowerCase()];
+      if (isUsableValue(v)) return String(v).trim();
+    }
+    return '';
+  }
 
-  document.getElementById('ine-next').addEventListener('click', function(){
-    var t = document.getElementById('ine').value.trim();
-    var bad = t.length < 3;
-    document.getElementById('f-ine').classList.toggle('invalid', bad);
-    if (bad) { document.getElementById('ine').focus(); return; }
-    answers.zaujem = 'Iné: ' + t;
-    pushTrackingEvent('Q4_sent', { quiz_question: 'zaujem', quiz_answer: answers.zaujem });
-    go('kontakt');
-  });
-  document.getElementById('ine').addEventListener('keydown', function(e){
-    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('ine-next').click(); }
-  });
+  function fillIfEmpty(id, value){
+    var el = document.getElementById(id);
+    if (!el || !value || el.value) return false;
+    el.value = value;
+    return true;
+  }
+
+  function prefillFromCampaign(){
+    var map = readQueryParams();
+    var email = firstParam(map, ['email', 'e-mail', 'mail']);
+    var ecmid = firstParam(map, ['ecmid']);
+    if (!email && ecmid && ecmid.indexOf('@') !== -1) email = ecmid;
+    var meno = firstParam(map, ['meno', 'name', 'fname', 'firstname', 'first_name', 'given_name']);
+    var priezvisko = firstParam(map, ['priezvisko', 'surname', 'lastname', 'last_name', 'lname', 'family_name']);
+    var tel = firstParam(map, ['tel', 'phone', 'telefon', 'telephone']);
+
+    if (meno && !priezvisko) {
+      var parts = meno.split(/\s+/);
+      if (parts.length > 1) {
+        meno = parts[0];
+        priezvisko = parts.slice(1).join(' ');
+      }
+    }
+
+    var filled = false;
+    filled = fillIfEmpty('email', email) || filled;
+    filled = fillIfEmpty('meno', meno) || filled;
+    filled = fillIfEmpty('priezvisko', priezvisko) || filled;
+    filled = fillIfEmpty('tel', tel) || filled;
+    return filled;
+  }
+
+  function showSuccess(){
+    var form = document.getElementById('leadform');
+    var done = document.getElementById('form-done');
+    if (document.activeElement && document.activeElement.blur) { document.activeElement.blur(); }
+    if (form) form.hidden = true;
+    if (done) done.hidden = false;
+    setTimeout(function(){
+      var card = document.querySelector('.endcta .card');
+      if (card) { card.scrollIntoView({behavior:'smooth', block:'start'}); }
+    }, 60);
+    pushTrackingEvent('form_submit', { source: 'dochodkova-prognoza-formular' });
+  }
 
   var form = document.getElementById('leadform');
-  ['meno', 'email', 'tel', 'sprava'].forEach(function(id){
+  prefillFromCampaign();
+
+  ['meno', 'priezvisko', 'email', 'tel'].forEach(function(id){
     var el = document.getElementById(id);
     if (!el) return;
     el.addEventListener('input', function(){
-      if (current === 'kontakt') {
-        pushTrackingEvent('form_start', { form_step: 'kontakt' });
-      }
+      pushTrackingEvent('form_start', { form_step: 'kontakt' });
     });
   });
+
   function setInvalid(id, invalid){
     document.getElementById(id).classList.toggle('invalid', invalid);
     return !invalid;
   }
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
     if (form.website && form.website.value) { return; }
 
     var ok = true;
     ok = setInvalid('f-meno', document.getElementById('meno').value.trim().length < 2) && ok;
+    ok = setInvalid('f-priezvisko', document.getElementById('priezvisko').value.trim().length < 2) && ok;
     ok = setInvalid('f-email', !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(document.getElementById('email').value)) && ok;
     var telVal = document.getElementById('tel').value.trim();
     ok = setInvalid('f-tel', telVal !== '' && !/^[+0-9][0-9\s\/().-]{7,17}$/.test(telVal)) && ok;
@@ -964,32 +879,20 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
     if (!ok) { return; }
 
     var data = {
-      prognoza: answers.prognoza || '',
-      dovod: answers.dovod || '',
-      ocakavania: answers.ocakavania || '',
-      dovera: answers.dovera || '',
-      vek: answers.vek || '',
-      zaujem: answers.zaujem || '',
+      prognoza: '',
+      dovod: '',
+      ocakavania: '',
+      dovera: '',
+      vek: '',
+      zaujem: '',
       meno: document.getElementById('meno').value.trim(),
+      priezvisko: document.getElementById('priezvisko').value.trim(),
       email: document.getElementById('email').value.trim(),
       tel: telVal,
-      sprava: document.getElementById('sprava').value.trim(),
-      source: 'dochodkova-prognoza-quiz',
+      sprava: '',
+      source: 'dochodkova-prognoza-formular',
       ts: bratislavaTimestamp()
     };
-
-    function done(){
-      /* záverečný tip podľa toho, či človek prognózu má */
-      var tip = document.getElementById('done-tip');
-      if (answers.prognoza === 'nie') {
-        tip.textContent = 'Prognózu zatiaľ nemáš? Nevadí. Ukážeme ti ako ju získať a spolu si prejdeme tvoje možnosti.';
-      } else {
-        tip.textContent = 'Priprav si svoju dôchodkovú prognózu nech sa vieme pozrieť na konkrétne čísla.';
-      }
-      show('done', {scrollToCard:true});
-      document.getElementById('barfill').style.width = '100%';
-      pushTrackingEvent('form_submit', { source: 'dochodkova-prognoza-quiz' });
-    }
 
     if (FORM_ENDPOINT) {
       var btn = form.querySelector('button[type=submit]');
@@ -999,10 +902,10 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
         mode:'no-cors',
         headers:{'Content-Type':'application/x-www-form-urlencoded'},
         body:new URLSearchParams(data).toString()
-      }).then(done)
-        .catch(function(){ btn.disabled=false; btn.textContent='Odoslať'; alert('Odoslanie sa nepodarilo. Skús to prosím znova.'); });
+      }).then(showSuccess)
+        .catch(function(){ btn.disabled=false; btn.textContent=SUBMIT_LABEL; alert('Odoslanie sa nepodarilo. Skús to prosím znova.'); });
     } else {
-      done();
+      showSuccess();
     }
   });
 
