@@ -61,16 +61,63 @@ fbq('track', 'PageView');
     display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem}
   .stage{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:0 18px 40px}
   .quiz{width:100%;max-width:1140px}
-  .hero{text-align:center;max-width:1140px;margin:0 auto;padding:var(--section-pad) 20px}
-  .hero h1{font-size:clamp(1.5rem,4.4vw,3.45rem);margin-bottom:28px;line-height:1.35;text-wrap:pretty}
-  .hero p{font-size:clamp(1.08rem,2.15vw,1.26rem);color:var(--ink);max-width:980px;margin:0 auto 36px;line-height:1.55}
-  .hero p.hero-badge{display:inline-block;background:rgba(238,28,37,.7);color:#fff;font-weight:700;
-    font-size:clamp(.78rem,1.5vw,.95rem);padding:.32em .7em;border-radius:8px;margin:0 auto 20px;
-    line-height:1.4;max-width:38em;text-wrap:balance}
-  .hero .btn{width:auto;display:inline-flex;padding:18px clamp(10px,3vw,36px);margin-bottom:36px}
-  .hero-trust{display:flex;align-items:center;justify-content:center;gap:18px 28px;flex-wrap:wrap;
-    font-size:.92rem;color:var(--ink-soft)}
+  .hero{--hero-t:0;--hero-chart-h:392px;--hero-base-h:96px;--hero-gap-h:192px;
+    display:grid;grid-template-columns:1.05fr .95fr;grid-template-rows:repeat(5,auto);
+    column-gap:clamp(40px,5vw,64px);row-gap:clamp(22px,3vw,34px);align-items:start;
+    max-width:1140px;margin:0 auto;padding:clamp(72px,9vw,112px) 4px;text-align:left}
+  .hero-copy{display:contents}
+  .hero h1{font-size:clamp(1.62rem,5.2vw,2.75rem);margin:0;line-height:1.35;text-wrap:pretty;max-width:15em;grid-column:1}
+  .hero-lead{margin:0;color:var(--ink);font-size:clamp(.94rem,2vw,1.06rem);line-height:1.6;font-weight:500;max-width:32em;grid-column:1}
+  .hero p.hero-badge{display:inline-block;background:rgba(238,28,37,.5);color:#fff;font-weight:700;
+    font-size:clamp(.72rem,1.35vw,.88rem);padding:.38em .72em;border-radius:8px;margin:0;
+    line-height:1.3;width:max-content;max-width:none;white-space:nowrap;grid-column:1;justify-self:start}
+  .hero-copy .btn{width:auto;max-width:none;display:inline-flex;margin:6px 0 2px;grid-column:1;justify-self:start;
+    padding:20px 40px;font-size:clamp(.9rem,calc((100vw - 3rem)/20),1.18rem);
+    box-shadow:0 18px 40px -10px rgba(238,28,37,.72)}
+  .hero-copy .btn:hover{box-shadow:0 22px 46px -10px rgba(238,28,37,.82)}
+  .hero-trust{display:flex;align-items:center;justify-content:flex-start;gap:10px clamp(16px,2.5vw,26px);flex-wrap:wrap;
+    font-size:clamp(.78rem,1.7vw,.88rem);color:var(--ink-soft);font-weight:500;margin-top:4px;grid-column:1}
   .hero-trust .stars{color:var(--gold);letter-spacing:2px;margin-right:4px}
+  .hero-chart{display:flex;flex-direction:column;gap:clamp(12px,1.6vw,18px);min-width:0;width:100%;
+    grid-column:2;grid-row:1/6;align-self:end;overflow:hidden}
+  .hero-bars{display:flex;align-items:flex-end;gap:clamp(12px,2vw,26px);height:var(--hero-chart-h);padding:0 2px;width:100%}
+  .hero-col{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;height:100%;gap:clamp(6px,1vw,12px)}
+  .hero-col-target{flex:1.15}
+  .hero-col-label{color:var(--ink-soft);font-size:clamp(.66rem,1.5vw,.81rem);font-weight:700;
+    text-transform:uppercase;letter-spacing:.06em;line-height:1.3}
+  .hero-col-val{color:#fff;font-size:clamp(1.38rem,4.4vw,2.12rem);font-weight:800;line-height:1;white-space:nowrap}
+  .hero-col-unit{color:var(--ink-soft);font-size:clamp(.69rem,1.5vw,.88rem);font-weight:600;margin-top:-2px}
+  .hero-bar-state{height:calc(var(--hero-base-h) * var(--hero-t));border-radius:10px 10px 0 0;
+    background:linear-gradient(180deg,var(--teal),var(--teal-dark));
+    box-shadow:0 -8px 24px -12px rgba(59,125,224,.8)}
+  .hero-target{position:relative;display:flex;flex-direction:column;justify-content:flex-end;
+    height:calc(var(--hero-base-h) + var(--hero-gap-h))}
+  .hero-bar-gap{position:relative;height:calc(var(--hero-gap-h) * var(--hero-t));overflow:hidden;
+    border-radius:10px 10px 0 0;
+    background:repeating-linear-gradient(135deg,rgba(238,28,37,.28) 0 10px,rgba(238,28,37,.1) 10px 20px);
+    border:2px dashed rgba(238,28,37,.65);border-bottom:none;opacity:min(1,calc(var(--hero-t) * 1.4))}
+  .hero-gap-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:2px;text-align:center;padding:0 6px}
+  .hero-gap-kicker{color:#ff8177;font-size:clamp(.59rem,1.4vw,.75rem);font-weight:800;letter-spacing:.08em;
+    text-transform:uppercase;line-height:1.2}
+  .hero-gap-val{color:#fff;font-size:clamp(1.62rem,5.4vw,2.5rem);font-weight:800;line-height:1.05;white-space:nowrap}
+  .hero-gap-note{color:#ffb3ad;font-size:clamp(.66rem,1.5vw,.81rem);font-weight:600;line-height:1.2}
+  .hero-bar-target{height:calc(var(--hero-base-h) * var(--hero-t));border-radius:0 0 10px 10px;
+    background:linear-gradient(180deg,var(--teal),var(--teal-dark))}
+  .hero-chart-note{margin:0;color:#8b96b3;font-size:clamp(.69rem,1.4vw,.75rem);line-height:1.5;font-weight:500;text-wrap:pretty}
+  @media(max-width:899px){
+    .hero{grid-template-columns:1fr;grid-template-rows:none;row-gap:clamp(20px,4vw,30px);text-align:center;
+      padding:clamp(56px,10vw,88px) 0;justify-items:center}
+    .hero h1,.hero-lead,.hero p.hero-badge,.hero-copy .btn,.hero-trust{grid-column:1}
+    .hero p.hero-badge{justify-self:center}
+    .hero-trust{justify-content:center}
+    .hero-copy .btn{width:100%;max-width:420px;justify-self:stretch}
+    .hero-chart{grid-column:1;grid-row:auto;align-self:stretch;width:100%}
+    .hero p.hero-badge{font-size:clamp(.58rem,2.55vw,.78rem);letter-spacing:-.015em}
+  }
+  @media(max-width:559px){
+    .hero-copy .btn{width:100%;padding:17px 16px}
+  }
   .form-zone{padding:var(--section-pad) 0;scroll-margin-top:0}
   .card{width:100%;max-width:560px;margin:0 auto;
     background:linear-gradient(180deg,#121c34 0%,var(--bg-card) 100%);
@@ -308,13 +355,12 @@ fbq('track', 'PageView');
   @media(max-width:480px){
     :root{--section-pad:48px}
     .card{padding:28px 20px}
-    .hero{padding:var(--section-pad) 12px}
-    .hero p.hero-badge{width:auto;max-width:22em;font-size:.95rem;padding:.4em .55em;
-      line-height:1.32;text-wrap:unset;text-align:center}
-    .hero h1{font-size:clamp(1.45rem,6.6vw,1.88rem);line-height:1.22;margin-bottom:16px}
+    .hero{padding:clamp(52px,11vw,80px) 0}
+    .hero p.hero-badge{font-size:clamp(.56rem,2.5vw,.72rem);padding:.36em .6em;letter-spacing:-.02em}
+    .hero h1{font-size:clamp(1.5rem,6.6vw,1.88rem);line-height:1.28}
     .hero h1 .hl-blue{padding:.04em .16em}
-    .hero p{font-size:.98rem;line-height:1.5;margin-bottom:22px}
-    .hero .btn{width:100%;padding:16px clamp(8px,2.2vw,16px);margin-bottom:24px}
+    .hero-lead{font-size:.98rem;line-height:1.5}
+    .hero-copy .btn{width:100%;padding:18px 14px}
     .hero-trust{gap:10px 16px;font-size:.82rem}
     .control-cta .btn,.rev-cta .btn,.trust-cta .btn{padding:16px clamp(8px,2.2vw,16px)}
   }
@@ -335,14 +381,42 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
 <div class="stage">
   <div class="quiz">
     <div class="hero" data-section="hero">
-      <p class="hero-badge">Pre živnostníkov a podnikateľov, ktorí nechcú byť odkázaní na štát</p>
-      <h1>Vybuduj si príjem, ktorý ti umožní <span class="hl-blue">odchod na dôchodok už&nbsp;v&nbsp;60&#8209;tke</span></h1>
-      <p>Prestaň sa spoliehať na štátnu pokladnicu, ktorej dnes chýba 900 miliónov eur. Počas 20-minútového bezplatného rozhovoru ti ukážem, ako si postaviť vlastný štít, s ktorým si udržíš rovnakú životnú úroveň aj na dôchodku.</p>
-      <a class="btn" href="#cta">Chcem ísť na dôchodok už v 60-tke</a>
-      <div class="hero-trust">
-        <span><span class="stars" aria-hidden="true">★★★★★</span> recenzie na Google</span>
-        <span>Overená stratégia</span>
-        <span>5 rokov praxe</span>
+      <div class="hero-copy">
+        <p class="hero-badge">Pre živnostníkov a podnikateľov, ktorí nechcú byť odkázaní na štát</p>
+        <h1>Vybuduj si príjem, ktorý ti umožní <span class="hl-blue">odchod na dôchodok už&nbsp;v&nbsp;60&#8209;tke</span></h1>
+        <p class="hero-lead">Nespoliehaj sa na štát, ktorému už dnes na dôchodky chýba 900 miliónov eur. Počas 20-minútového bezplatného rozhovoru ti ukážem, ako si vytvoriť vlastný finančný štít na dôchodok.</p>
+        <div class="hero-chart" role="img" aria-label="Modelový príklad. Štátny dôchodok 400 € mesačne. Cieľ 1200 €. Dôchodkový rozdiel 800 € každý mesiac chýba.">
+        <div class="hero-bars">
+          <div class="hero-col">
+            <div class="hero-col-label">Štátny dôchodok</div>
+            <div class="hero-col-val" data-hero-eur="400">0 €</div>
+            <div class="hero-col-unit">/ mesiac</div>
+            <div class="hero-bar-state"></div>
+          </div>
+          <div class="hero-col hero-col-target">
+            <div class="hero-col-label">Dôchodok, aký chceš mať</div>
+            <div class="hero-col-val" data-hero-eur="1200">0 €</div>
+            <div class="hero-col-unit">/ mesiac</div>
+            <div class="hero-target">
+              <div class="hero-bar-gap">
+                <div class="hero-gap-inner">
+                  <span class="hero-gap-kicker">Dôchodkový rozdiel</span>
+                  <span class="hero-gap-val" data-hero-eur="800">0 €</span>
+                  <span class="hero-gap-note">každý mesiac chýba</span>
+                </div>
+              </div>
+              <div class="hero-bar-target"></div>
+            </div>
+          </div>
+        </div>
+        <p class="hero-chart-note">Modelový príklad v dnešných eurách, bez zohľadnenia inflácie. Nejde o prognózu ani o investičné odporúčanie.</p>
+      </div>
+        <a class="btn" href="#cta">Chcem ísť na dôchodok už v 60-tke</a>
+        <div class="hero-trust">
+          <span><span class="stars" aria-hidden="true">★★★★★</span> recenzie na Google</span>
+          <span>Overená stratégia</span>
+          <span>5 rokov praxe</span>
+        </div>
       </div>
     </div>
 
@@ -662,6 +736,57 @@ src="https://www.facebook.com/tr?id=1402052265114481&ev=PageView&noscript=1"
      ďalej podľa scenára nastaveného v Make (napr. zápis do Google Tabuľky). */
   var FORM_ENDPOINT = "https://hook.eu1.make.com/rjgscxvvbdbe8eg8b3915tbr34uueqvp";
   var SUBMIT_LABEL = "Chcem ísť na dôchodok už v 60-tke";
+
+  (function(){
+    var hero = document.querySelector('.hero');
+    if (!hero) return;
+    var vals = hero.querySelectorAll('[data-hero-eur]');
+    function eur(n){
+      return Math.round(n).toLocaleString('sk-SK').replace(/\u00a0/g, ' ') + ' €';
+    }
+    function setChartH(){
+      var w = window.innerWidth;
+      var chartH = w < 420 ? 260 : w < 700 ? 300 : w < 1100 ? 340 : 392;
+      var baseH = chartH * 0.245;
+      hero.style.setProperty('--hero-chart-h', chartH + 'px');
+      hero.style.setProperty('--hero-base-h', baseH + 'px');
+      hero.style.setProperty('--hero-gap-h', (baseH * 2) + 'px');
+    }
+    function setT(t){
+      hero.style.setProperty('--hero-t', String(t));
+      vals.forEach(function(el){
+        el.textContent = eur(Number(el.getAttribute('data-hero-eur')) * t);
+      });
+    }
+    setChartH();
+    window.addEventListener('resize', setChartH);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setT(1);
+      return;
+    }
+    setT(0);
+    var started = false;
+    function run(){
+      if (started) return;
+      started = true;
+      var dur = 1400;
+      var start = performance.now() + 250;
+      function tick(now){
+        var p = Math.max(0, Math.min(1, (now - start) / dur));
+        setT(1 - Math.pow(1 - p, 3));
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function(entries){
+        if (entries[0] && entries[0].isIntersecting) { run(); io.disconnect(); }
+      }, { threshold: 0.2 });
+      io.observe(hero);
+    } else {
+      run();
+    }
+  })();
 
   /* Ecomail kampaň: do odkazu pridaj
      ?email=*|EMAIL|*&meno=*|NAME|*&priezvisko=*|SURNAME|*#cta
